@@ -18,13 +18,13 @@ shopt -s expand_aliases extglob
 : "${FATE_DIR:=/data/projects/fate}"
 : "${TAG:=latest}"
 : "${PREFIX:=federatedai}"
-
+: "${version_tag:=release}"
 
 BASE_DIR=$(dirname "$0")
 cd $BASE_DIR
 WORKING_DIR=$(pwd)
 
-: "${PACKAGE_DIR_CACHE:=${BASE_DIR}/cache}"
+: "${PACKAGE_DIR_CACHE:=${WORKING_DIR}/cache}"
 
 # Build and Package FATE
 package() {
@@ -34,14 +34,14 @@ package() {
 
         cd $FATE_DIR
         # package all
-        bash $FATE_DIR/build/package-build/build_docker.sh release all
+        bash $FATE_DIR/build/package-build/build_docker.sh ${version_tag} all
 
         rm -rf $FATE_DIR/build/package-build/build_docker.sh
 
         mkdir -p ${PACKAGE_DIR_CACHE}
 
         # FATE package_dir ${FATE_DIR}/FATE_install_${version}_release/
-        cp -r ${FATE_DIR}/FATE_install_${version}_release/* ${PACKAGE_DIR_CACHE}
+        cp -r ${FATE_DIR}/FATE_install_${version}_${version_tag}/* ${PACKAGE_DIR_CACHE}
 }
 
 # build_builder() {
@@ -168,7 +168,7 @@ echo "[INFO] Base image tag is: "${BASE_TAG}
 echo "[INFO] Source dir: "${FATE_DIR}
 echo "[INFO] Working dir: "${WORKING_DIR}
 echo "[INFO] Base dir: "${BASE_DIR}
-echo "[INFO] Package dir is: "${FATE_DIR}/catch/
+echo "[INFO] Package dir is: "${PACKAGE_DIR_CACHE}
 
 
 while [ "$1" != "" ]; do
