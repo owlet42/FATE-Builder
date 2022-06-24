@@ -1,66 +1,52 @@
 #!/bin/bash
-set -e
+
+# Copyright 2019-2020 VMware, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# you may obtain a copy of the License at
+# http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+set -euxo pipefail
+shopt -s expand_aliases extglob
 
 : "${FATE_DIR:=/data/projects/fate}"
+: "${TAG:=latest}"
+: "${PREFIX:=federatedai}"
 
 
-
-# cd worker_dir
-BASEDIR=$FATE_DIR
-cd "$BASEDIR"
+BASE_DIR=$(dirname "$0")
+cd $BASE_DIR
 WORKING_DIR=$(pwd)
 
-# get version
-source_dir=$(cd `dirname $0`; cd ../;cd ../;pwd)
-cd ${source_dir}
+: "${PACKAGE_DIR_CACHE:=${BASE_DIR}/catch}"
 
-cd ${WORKING_DIR}
-
-version="$(grep -ioP "(?<=FATE=).+" "$FATE_DIR/fate.env")"
-
-# set image PREFIX and TAG
-# default PREFIX is federatedai
-PREFIX="federatedai"
-if [ -z "$TAG" ]; then
-        TAG="${version}-release"
-fi
-BASE_TAG=${TAG}
-source ${WORKING_DIR}/.env
-
-# print build INFO
-echo "[INFO] Build info"
-echo "[INFO] Version: v"${version}
-echo "[INFO] Image prefix is: "${PREFIX}
-echo "[INFO] Image tag is: "${TAG}
-echo "[INFO] Base image tag is: "${BASE_TAG}
-echo "[INFO] source dir: "${source_dir}
-echo "[INFO] Package dir is: "${WORKING_DIR}/catch/
-
+# Build and Package FATE
 package() {
-        # cd ${WORKING_DIR}
 
-        # [ -d ../package-build/build_docker.sh  ] && rm -rf ../package-build/build_docker.sh 
-        # cp ../package-build/build.sh ../package-build/build_docker.sh 
-        # sed -i '' 's#mvn clean package -DskipTests#docker run --rm -u $(id -u):$(id -g) -v ${source_dir}/fateboard:/data/projects/fate/fateboard --entrypoint="" maven:3.6-jdk-8 /bin/bash -c "cd /data/projects/fate/fateboard \&\& mvn clean package -DskipTests"#g'   build_docker.sh 
-        #  sed -i '' 's#bash ./auto-packaging.sh#docker run --rm -u $(id -u):$(id -g) -v ${source_dir}/eggroll:/data/projects/fate/eggroll --entrypoint="" maven:3.6-jdk-8 /bin/bash -c "cd /data/projects/fate/eggroll/deploy \&\& bash auto-packaging.sh"#g' build_docker.sh 
+        mkdir -p $FATE_DIR/build/package-build/
+        cp build_docker.sh $FATE_DIR/build/package-build/
 
-        cp build_docker.sh $FATE_DIR/package-build/
-
-        cd ${WORKING_DIR}
+        cd $FATE_DIR
         # package all
-        source ../package-build/build_docker.sh release all
+        bash $FATE_DIR/build/package-build/build_docker.sh release all
 
-        rm -rf ../package-build/build_docker.sh
+        rm -rf $FATE_DIR/build/package-build/build_docker.sh
 
-        mkdir -p ${WORKING_DIR}/catch/
-        cp -r ${package_dir}/* ${WORKING_DIR}/catch/
+        mkdir -p ${PACKAGE_DIR_CACHE}
+        cp -r ${package_dir}/* ${PACKAGE_DIR_CACHE}
 }
 
-build_builder() {
-    echo "Building builder"
-    docker build -t federatedai/builder -f builder/Dockerfile docker/builder
-    echo "Built builder"
-}
+# build_builder() {
+#     echo "Building builder"
+#     docker build -t federatedai/builder -f builder/Dockerfile docker/builder
+#     echo "Built builder"
+# }
 
 check_fate_dir() {
     if [ ! -d "$FATE_DIR" ]; then
@@ -69,27 +55,39 @@ check_fate_dir() {
     fi
 }
 
-build_fate() {
-    echo "Building fate"
-    docker run -v $FATE_DIR:$FATE_DIR federatedai/builder /bin/bash -c "cd $FATE_DIR && ./build.sh"
-    echo "Built fate"
+# build_fate() {
+#     echo "Building fate"
+#     docker run -v $FATE_DIR:$FATE_DIR federatedai/builder /bin/bash -c "cd $FATE_DIR && ./build.sh"
+#     echo "Built fate"
+# }
+
+buildBase() {
+        echo "START BUILDING BASE IMAGE"
+        #cd ${WORKING_DIR}
+        docker build --build-arg version=${version} -f ${WORKING_DIR}/docker/base/Dockerfile -t ${PREFIX}/base-image:${BASE_TAG} ${PACKAGE_DIR_CACHE}
+        echo "FINISH BUILDING BASE IMAGE"
 }
 
-build_base_image() {
-    echo "Building base image"
-    docker build -t federatedai/base -f base/Dockerfile docker/base
-    echo "Built base image"
+buildModule() {
+        echo "START BUILDING IMAGE"
+        for module in "python" "fateboard" "eggroll" "python-nn"; do
+        #cd ${WORKING_DIR}
+                echo "### START BUILDING ${module} ###"
+                docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} --no-cache -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/docker/modules/${module}/Dockerfile ${PACKAGE_DIR_CACHE}
+                echo "### FINISH BUILDING ${module} ###"
+                echo ""
+        done
+        echo "END BUILDING IMAGE"
 }
 
-build_model_image() {
-    echo "Building model image"
-    for model in $(ls -d docker/modules/*/); do
-        model_name=$(basename $model)
-        echo "Building $model_name"
-        docker build -t federatedai/$model_name -f $model/Dockerfile docker/modules/$model_name
-        echo "Built $model_name"
-    done
-    echo "Built model image"
+pushImage() {
+        ## push image
+        for module in "python" "eggroll" "fateboard" "python-nn"; do
+                echo "### START PUSH ${module} ###"
+                docker push ${PREFIX}/${module}:${TAG}
+                echo "### FINISH PUSH ${module} ###"
+                echo ""
+        done
 }
 
 images_push() {
@@ -103,17 +101,27 @@ images_push() {
     echo "Pushed images"
 }
 
-while getopts "hf:" opt; do
+# start 
+
+while getopts "hfpt:" opt; do
     case $opt in
         h)
             echo "Usage: ./build.sh [-h] [-f fate_dir]"
             echo "Options:"
             echo "  -h  Show this help message and exit"
             echo "  -f  Path to fate directory"
+            echo "  -p  images prefix"
+            echo "  -t  images tag"
             exit 0
             ;;
         f)
             FATE_DIR=$OPTARG
+            ;;
+        p)
+            PREFIX=$OPTARG
+            ;;
+        t)
+            TAG=$OPTARG
             ;;
         \?)
             echo "Invalid option: -$OPTARG" >&2
@@ -124,4 +132,62 @@ while getopts "hf:" opt; do
             exit 1
             ;;
     esac
+done
+
+
+# check fate dir
+check_fate_dir
+
+# cd ${WORKING_DIR}
+if [ -f "$FATE_DIR/fate.env" ]; then
+  version="$(grep "FATE=" $FATE_DIR/fate.env | awk -F '=' '{print $2}')"
+else
+  echo "Error: Please set FATE_DIR or Check FATE_DIR=$FATE_DIR is a FATE directory"
+  # TODO git clone FATE
+  exit 1
+fi
+
+# set image PREFIX and TAG
+if [  -z "${TAG}" ]; then
+    TAG="${version}-release"
+fi
+BASE_TAG=${TAG}
+
+if [ -f "$BASE_DIR/.env" ];then 
+  source $BASE_DIR/.env
+fi
+
+# print build INFO
+echo "[INFO] Build info"
+echo "[INFO] Version: v"${version}
+echo "[INFO] Image prefix is: "${PREFIX}
+echo "[INFO] Image tag is: "${TAG}
+echo "[INFO] Base image tag is: "${BASE_TAG}
+echo "[INFO] Source dir: "${FATE_DIR}
+echo "[INFO] Working dir: "${WORKING_DIR}
+echo "[INFO] Base dir: "${BASE_DIR}
+echo "[INFO] Package dir is: "${FATE_DIR}/catch/
+
+
+while [ "$1" != "" ]; do
+        case $1 in
+        package)
+                package
+                ;;
+        base)
+                buildBase
+                ;;
+        modules)
+                buildModule
+                ;;
+        all)
+                package
+                buildBase
+                buildModule
+                ;;
+        push)
+                pushImage
+                ;;
+        esac
+        shift
 done
