@@ -24,7 +24,7 @@ BASE_DIR=$(dirname "$0")
 cd $BASE_DIR
 WORKING_DIR=$(pwd)
 
-: "${PACKAGE_DIR_CACHE:=${BASE_DIR}/catch}"
+: "${PACKAGE_DIR_CACHE:=${BASE_DIR}/cache}"
 
 # Build and Package FATE
 package() {
@@ -39,7 +39,9 @@ package() {
         rm -rf $FATE_DIR/build/package-build/build_docker.sh
 
         mkdir -p ${PACKAGE_DIR_CACHE}
-        cp -r ${package_dir}/* ${PACKAGE_DIR_CACHE}
+
+        # FATE package_dir ${FATE_DIR}/FATE_install_${version}_release/
+        cp -r ${FATE_DIR}/FATE_install_${version}_release/* ${PACKAGE_DIR_CACHE}
 }
 
 # build_builder() {
