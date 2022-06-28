@@ -173,7 +173,7 @@ echo "[INFO] Package dir is: "${PACKAGE_DIR_CACHE}
 
 
 while [ "$1" != "" ]; do
-        case $1 in $@
+        case $1 in
         package)
                 package
                 ;;
