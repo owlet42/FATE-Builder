@@ -4,13 +4,12 @@ FROM ${PREFIX}/python:${BASE_TAG} as data
 
 FROM python:3.6
 
+WORKDIR /data/projects/fate/
+
 RUN pip install notebook fate-client pandas sklearn
 RUN mkdir /data/projects/fate/logs
 COPY --from=data /data/projects/fate/examples /data/projects/fate/examples
 COPY --from=data /data/projects/fate/fateflow/examples /data/projects/fate/fateflow/examples
-
-
-WORKDIR /data/projects/fate/
 
 ENV FATE_FLOW_IP=fateflow
 ENV FATE_FLOW_PORT=9380
