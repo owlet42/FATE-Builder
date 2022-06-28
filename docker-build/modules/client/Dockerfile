@@ -4,7 +4,6 @@ FROM ${PREFIX}/python:${BASE_TAG} as data
 
 FROM python:3.6
 
-COPY pipeline /data/projects/fate/pipeline
 RUN pip install notebook fate-client pandas sklearn
 RUN mkdir /data/projects/fate/logs
 COPY --from=data /data/projects/fate/examples /data/projects/fate/examples
