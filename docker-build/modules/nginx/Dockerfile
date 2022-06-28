@@ -1,3 +1,6 @@
+ARG PREFIX=prefix
+ARG BASE_TAG=tag
+
 FROM ${PREFIX}/base-image:${BASE_TAG} as builder
 WORKDIR /data/projects/fate/
 COPY proxy.tar.gz .
