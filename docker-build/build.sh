@@ -85,13 +85,20 @@ buildComponentEggrollModule() {
 
 buildComponentSparkModule(){
         echo "START BUILDING Spark Module IMAGE"
-        for module in "nginx" "python-spark" "spark-base" "spark-master"; do
-        #cd ${WORKING_DIR}
+        for module in "python-spark" "spark-base" "spark-master"; do
                 echo "### START BUILDING ${module} ###"
                 docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${WORKING_DIR}/modules/${module}/
                 echo "### FINISH BUILDING ${module} ###"
                 echo ""
         done
+
+        for module in "nginx"; do
+                echo "### START BUILDING ${module} ###"
+                docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${PACKAGE_DIR_CACHE}
+                echo "### FINISH BUILDING ${module} ###"
+                echo ""
+        done
+
         echo "END BUILDING IMAGE"
 }
 
