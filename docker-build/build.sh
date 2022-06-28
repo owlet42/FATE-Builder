@@ -19,7 +19,7 @@ shopt -s expand_aliases extglob
 : "${TAG:=latest}"
 : "${PREFIX:=federatedai}"
 : "${version_tag:=release}"
-: "${docker_options:="--no-cache"}"
+: "${docker_options:=""}"
 
 BASE_DIR=$(dirname "$0")
 cd $BASE_DIR
@@ -71,9 +71,9 @@ buildBase() {
         echo "FINISH BUILDING BASE IMAGE"
 }
 
-buildModule() {
+buildComponentEggrollModule() {
         echo "START BUILDING IMAGE"
-        for module in "python" "fateboard" "eggroll" "python-nn" "nginx" "python-spark" "spark-base" "spark-master" "client" "fate-test"; do
+        for module in "python" "fateboard" "eggroll" "client" "fate-test"; do
         #cd ${WORKING_DIR}
                 echo "### START BUILDING ${module} ###"
                 docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${PACKAGE_DIR_CACHE}
@@ -81,6 +81,33 @@ buildModule() {
                 echo ""
         done
         echo "END BUILDING IMAGE"
+}
+
+buildComponentSparkModule(){
+        echo "START BUILDING IMAGE"
+        for module in "nginx" "python-spark" "spark-base" "spark-master"; do
+        #cd ${WORKING_DIR}
+                echo "### START BUILDING ${module} ###"
+                docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${WORKING_DIR}/modules/${module}/
+                echo "### FINISH BUILDING ${module} ###"
+                echo ""
+        done
+        echo "END BUILDING IMAGE"
+}
+
+buildAlgorithmNN(){
+        echo "### START BUILDING python-nn ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/python-nn:${TAG} -f ${WORKING_DIR}/modules/python-nn/Dockerfile ${WORKING_DIR}/modules/python-nn
+        echo "### FINISH BUILDING python-nn ###"
+        echo ""
+}
+
+
+buildModule(){
+        # TODO selective build
+        buildComponentEggrollModule
+        buildComponentSparkModule
+        buildAlgorithmNN
 }
 
 pushImage() {
