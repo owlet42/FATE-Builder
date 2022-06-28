@@ -58,8 +58,8 @@ RUN cd /tmp \
     && apt-get autoremove -y
 
 WORKDIR /data/projects/fate/proxy/
-COPY --from=builder /data/projects/fate/proxy/conf ./nginx/conf
-COPY --from=builder /data/projects/fate/proxy/lua ./nginx/lua
+COPY --from=builder /data/projects/fate/proxy/nginx/conf ./nginx/conf
+COPY --from=builder /data/projects/fate/proxy/nginx/lua ./nginx/lua
 
 ENV PATH=$PATH:/data/projects/fate/proxy/bin:/data/projects/fate/proxy/nginx/sbin
 
