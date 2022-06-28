@@ -19,6 +19,7 @@ shopt -s expand_aliases extglob
 : "${TAG:=latest}"
 : "${PREFIX:=federatedai}"
 : "${version_tag:=release}"
+: "${docker_options:="--no-cache"}"
 
 BASE_DIR=$(dirname "$0")
 cd $BASE_DIR
@@ -66,16 +67,16 @@ check_fate_dir() {
 buildBase() {
         echo "START BUILDING BASE IMAGE"
         #cd ${WORKING_DIR}
-        docker build --build-arg version=${version} -f ${WORKING_DIR}/docker/base/Dockerfile -t ${PREFIX}/base-image:${BASE_TAG} ${PACKAGE_DIR_CACHE}
+        docker build --build-arg version=${version} -f ${WORKING_DIR}/base/Dockerfile -t ${PREFIX}/base-image:${BASE_TAG} ${PACKAGE_DIR_CACHE}
         echo "FINISH BUILDING BASE IMAGE"
 }
 
 buildModule() {
         echo "START BUILDING IMAGE"
-        for module in "python" "fateboard" "eggroll" "python-nn"; do
+        for module in "python" "fateboard" "eggroll" "python-nn" "nginx" "python-spark" "spark-base" "spark-master" "client" "fate-test"; do
         #cd ${WORKING_DIR}
                 echo "### START BUILDING ${module} ###"
-                docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} --no-cache -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/docker/modules/${module}/Dockerfile ${PACKAGE_DIR_CACHE}
+                docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${PACKAGE_DIR_CACHE}
                 echo "### FINISH BUILDING ${module} ###"
                 echo ""
         done
@@ -172,7 +173,7 @@ echo "[INFO] Package dir is: "${PACKAGE_DIR_CACHE}
 
 
 while [ "$1" != "" ]; do
-        case $1 in
+        case $1 in $@
         package)
                 package
                 ;;
