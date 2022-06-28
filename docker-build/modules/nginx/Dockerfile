@@ -1,3 +1,8 @@
+FROM ${PREFIX}/base-image:${BASE_TAG} as builder
+WORKDIR /data/projects/fate/
+COPY proxy.tar.gz .
+RUN tar -xzf proxy.tar.gz;
+
 FROM ubuntu:18.04
 
 # Docker Build Arguments
@@ -50,8 +55,8 @@ RUN cd /tmp \
     && apt-get autoremove -y
 
 WORKDIR /data/projects/fate/proxy/
-COPY proxy/conf ./nginx/conf
-COPY proxy/lua ./nginx/lua
+COPY --from=builder /data/projects/fate/proxy/conf ./nginx/conf
+COPY --from=builder /data/projects/fate/proxy/lua ./nginx/lua
 
 ENV PATH=$PATH:/data/projects/fate/proxy/bin:/data/projects/fate/proxy/nginx/sbin
 
