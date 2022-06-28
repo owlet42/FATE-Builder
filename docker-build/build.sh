@@ -72,8 +72,8 @@ buildBase() {
 }
 
 buildComponentEggrollModule() {
-        echo "START BUILDING IMAGE"
-        for module in "python" "fateboard" "eggroll" "client" "fate-test"; do
+        echo "START BUILDING Eggroll Module IMAGE"
+        for module in "python" "fateboard" "eggroll" "client"; do
         #cd ${WORKING_DIR}
                 echo "### START BUILDING ${module} ###"
                 docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${PACKAGE_DIR_CACHE}
@@ -84,7 +84,7 @@ buildComponentEggrollModule() {
 }
 
 buildComponentSparkModule(){
-        echo "START BUILDING IMAGE"
+        echo "START BUILDING Spark Module IMAGE"
         for module in "nginx" "python-spark" "spark-base" "spark-master"; do
         #cd ${WORKING_DIR}
                 echo "### START BUILDING ${module} ###"
@@ -102,13 +102,24 @@ buildAlgorithmNN(){
         echo ""
 }
 
-build
+buildOptionalModule(){
 
+        echo "START BUILDING Optional Module IMAGE"
+        for module in "fate-test"; do
+        #cd ${WORKING_DIR}
+                echo "### START BUILDING ${module} ###"
+                docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/${module}:${TAG} -f ${WORKING_DIR}/modules/${module}/Dockerfile ${WORKING_DIR}/modules/${module}/
+                echo "### FINISH BUILDING ${module} ###"
+                echo ""
+        done
+        echo "END BUILDING Optional Module IMAGE"
+}
 
 buildModule(){
         # TODO selective build
         buildComponentEggrollModule
         buildComponentSparkModule
+        buildOptionalModule
         buildAlgorithmNN
 }
 

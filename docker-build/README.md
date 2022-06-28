@@ -138,7 +138,7 @@ docker load -i third-party.images.tar.gz
 docker load -i fate.images.tar.gz
 ```
 
-Now the machine has all FATE images and is ready for deployment. 
+Now the machine has all FATE images and is ready for deployment.
 
 ### Deployment
 
