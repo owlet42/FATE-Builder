@@ -102,6 +102,8 @@ buildAlgorithmNN(){
         echo ""
 }
 
+build
+
 
 buildModule(){
         # TODO selective build

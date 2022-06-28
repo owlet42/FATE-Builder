@@ -1,6 +1,6 @@
-ARG SOURCE_PREFIX=federatedai
-ARG SOURCE_TAG=1.5.0-release
-FROM ${SOURCE_PREFIX}/python:${SOURCE_TAG} as data
+ARG PREFIX=prefix
+ARG BASE_TAG=tag
+FROM ${PREFIX}/python:${BASE_TAG} as data
 
 FROM python:3.6
 
