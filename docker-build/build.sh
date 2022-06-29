@@ -13,7 +13,7 @@
 # limitations under the License.
 
 set -euxo pipefail
-shopt -s expand_aliases extglob
+
 
 : "${FATE_DIR:=/data/projects/fate}"
 : "${TAG:=latest}"
@@ -156,7 +156,7 @@ images_push() {
 while getopts "hfpt:" opt; do
     case $opt in
         h)
-            echo "Usage: ./build.sh [-h] [-f fate_dir]"
+            echo "Usage: ./build.sh [-h] [-f fate_dir] [-p prefix] [-t tag]"
             echo "Options:"
             echo "  -h  Show this help message and exit"
             echo "  -f  Path to fate directory"
@@ -219,7 +219,7 @@ echo "[INFO] Base dir: "${BASE_DIR}
 echo "[INFO] Package dir is: "${PACKAGE_DIR_CACHE}
 
 
-while [ "$1" != "" ]; do
+while [ -n "${1-}" ]; do
         case $1 in
         package)
                 package
@@ -238,6 +238,8 @@ while [ "$1" != "" ]; do
         push)
                 pushImage
                 ;;
+        *)
+                echo "Usage: bash build.sh [Options] [package|base|modules|all|push]"
         esac
         shift
 done
