@@ -104,7 +104,7 @@ buildComponentSparkModule(){
 
 buildAlgorithmNN(){
         echo "### START BUILDING python-nn ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/python-nn:${TAG} -f ${WORKING_DIR}/modules/python-nn/Dockerfile ${WORKING_DIR}/modules/python-nn
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${docker_options} -t ${PREFIX}/python-nn:${TAG} -f ${WORKING_DIR}/modules/python-nn/Dockerfile ${PACKAGE_DIR_CACHE}
         echo "### FINISH BUILDING python-nn ###"
         echo ""
 }
