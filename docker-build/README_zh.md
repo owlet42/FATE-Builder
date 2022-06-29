@@ -86,11 +86,18 @@ FATE_DIR=/root/FATE bash build.sh all
 
 ```bash
 $ docker images | grep federatedai
-  REPOSITORY                            TAG
-  federatedai/eggroll                   <TAG>
-  federatedai/fateboard                 <TAG>
-  federatedai/python                    <TAG>
-  federatedai/base-image                <TAG>
+REPOSITORY                                       TAG
+federatedai/python-nn                            <TAG>
+federatedai/fate-test                            <TAG>
+federatedai/nginx                                <TAG>
+federatedai/spark-master                         <TAG>
+federatedai/spark-base                           <TAG>
+federatedai/python-spark                         <TAG>
+federatedai/client                               <TAG>
+federatedai/eggroll                              <TAG>
+federatedai/fateboard                            <TAG>
+federatedai/python                               <TAG>
+federatedai/base-image                           <TAG>
 ```
 
 ### 把镜像推送到镜像仓库（可选）
