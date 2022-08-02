@@ -199,7 +199,7 @@ buildOptionalModule(){
 
         echo "### START BUILDING client ###"
         docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/client:${TAG} \
-                -f ${WORKING_DIR}/modules/client/Dockerfile ${WORKING_DIR}/modules/${module}/
+                -f ${WORKING_DIR}/modules/client/Dockerfile ${WORKING_DIR}/modules/client/
         echo "### FINISH BUILDING client ###"
         echo ""
 
