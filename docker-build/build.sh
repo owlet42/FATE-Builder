@@ -22,7 +22,7 @@ set -euxo pipefail
 : "${Docker_Options:=""}"
 : "${Build_Basic:=1}"
 : "${Build_OP:=1}"
-: "${Build_FUM:=1}"
+: "${Build_FUM:=0}"
 : "${Build_NN:=1}"
 : "${Build_Spark:=1}"
 : "${Build_IPCL:=0}"
