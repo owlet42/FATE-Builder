@@ -134,9 +134,9 @@ packaging_eggroll() {
 packaging_ipcl_pkg(){
     [ "$Build_IPCL" -eq 0 ] && return 0
     echo "[INFO] package ipcl_pkg start"
-    if [[ -d ${IPCL_PKG_DIR} ]] 
+    if [[ ! -d ${IPCL_PKG_DIR} ]] 
     then
-        git clone --single-branch -t ${IPCL_VERSION}  https://github.com/intel/pailliercryptolib_python pailliercryptolib_python
+        git clone --single-branch -b ${IPCL_VERSION}  https://github.com/intel/pailliercryptolib_python pailliercryptolib_python
         IPCL_PKG_DIR=$(pwd)/pailliercryptolib_python
     fi
     tar cvzf pailliercryptolib_python.tar.gz ${IPCL_PKG_DIR} 
