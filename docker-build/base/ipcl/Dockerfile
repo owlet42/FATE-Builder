@@ -30,9 +30,7 @@ WORKDIR /data/projects/fate/
 ENV WORKDIR /data/projects/fate
 
 COPY pailliercryptolib_python.tar.gz .
-COPY ipcl_demo.tar.gz .
-RUN tar -xzf pailliercryptolib_python.tar.gz; \
-    tar -xzf ipcl_demo.tar.gz;
+RUN tar -xzf pailliercryptolib_python.tar.gz
 
 # install ipcl-python
 ENV IPCL_DIR=${WORKDIR}/ipcl_pkg/ipcl
