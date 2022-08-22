@@ -7,11 +7,6 @@ FROM ${PREFIX}/base-image:${BASE_TAG}
 RUN yum install -y flex devtoolset-8 numactl-devel
 SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
 
-# install cmake
-# RUN wget http://cmake.org/files/v3.22/cmake-3.22.0.tar.gz \
-#     && tar zxf cmake-3.22.0.tar.gz && cd cmake-3.22.0 \
-#     && ./configure && make install -j \
-#     && cd .. && rm -rf cmake-*
 RUN pip install cmake==3.22
 
 # install nasm
@@ -37,3 +32,12 @@ ENV WORKDIR /data/projects/fate
 ENV IPCL_DIR=${WORKDIR}/pailliercryptolib_python
 RUN git clone https://github.com/intel/pailliercryptolib_python \
      && cd pailliercryptolib_python && python setup.py install
+
+COPY pailliercryptolib_python.tar.gz .
+COPY ipcl_demo.tar.gz .
+RUN tar -xzf pailliercryptolib_python.tar.gz; \
+    tar -xzf ipcl_demo.tar.gz;
+
+# install ipcl-python
+ENV IPCL_DIR=${WORKDIR}/ipcl_pkg/ipcl
+RUN cd ./pailliercryptolib_python/ && python setup.py install

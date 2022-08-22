@@ -22,7 +22,7 @@ source_dir=$(
     cd ../
     pwd
 )
-support_modules=(bin conf examples build deploy proxy fate fateflow fateboard eggroll)
+support_modules=(bin conf examples build deploy proxy fate fateflow fateboard eggroll ipcl_pkg ipcl_demo)
 environment_modules=(python36 jdk pypi)
 packaging_modules=()
 echo ${source_dir}
@@ -129,6 +129,29 @@ packaging_eggroll() {
     tar xzf eggroll.tar.gz
     rm -rf eggroll.tar.gz
     echo "[INFO] package eggroll done"
+}
+
+packaging_ipcl_pkg(){
+    [ "$Build_IPCL" -eq 0 ] && return 0
+    echo "[INFO] package ipcl_pkg start"
+    if [[ -d ${IPCL_PKG_DIR} ]] 
+    then
+        git clone --single-branch -t ${IPCL_VERSION}  https://github.com/intel/pailliercryptolib_python pailliercryptolib_python
+        IPCL_PKG_DIR=$(pwd)/pailliercryptolib_python
+    fi
+    tar cvzf pailliercryptolib_python.tar.gz ${IPCL_PKG_DIR} 
+    ipcl_pkg_tarball="${IPCL_PKG_DIR}/pailliercryptolib_python.tar.gz"
+    echo "[INFO] -- Processing ipcl_pkg in ${ipcl_pkg_tarball}"
+    cp -r ${ipcl_pkg_tarball} ${package_dir}
+    echo "[INFO] package ipcl_pkg done"
+}
+
+packaging_ipcl_demo(){
+    [ "$Build_IPCL" -eq 0 ] && return 0
+
+    echo "[INFO] package ipcl_demo start"
+    cp -r ipcl_demo ${package_dir}
+    echo "[INFO] package ipcl_demo done"
 }
 
 pull_fateflow() {

@@ -26,6 +26,7 @@ set -euxo pipefail
 : "${Build_NN:=1}"
 : "${Build_Spark:=1}"
 : "${Build_IPCL:=0}"
+: "${IPCL_VERSION:=v1.3.3}"
 
 BASE_DIR=$(dirname "$0")
 cd $BASE_DIR
@@ -41,6 +42,7 @@ package() {
 
         cd $FATE_DIR
         # package all
+
         bash $FATE_DIR/build/package-build/build_docker.sh ${version_tag} all
 
         rm -rf $FATE_DIR/build/package-build/build_docker.sh
