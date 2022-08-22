@@ -139,9 +139,8 @@ packaging_ipcl_pkg(){
         git clone --single-branch -b ${IPCL_VERSION}  https://github.com/intel/pailliercryptolib_python pailliercryptolib_python
         IPCL_PKG_DIR=$(pwd)/pailliercryptolib_python
     fi
-    tar cvzf ${package_dir}/pailliercryptolib_python.tar.gz ${IPCL_PKG_DIR} 
-    ipcl_pkg_tarball="${package_dir}/pailliercryptolib_python.tar.gz"
-    echo "[INFO] -- Processing ipcl_pkg in ${ipcl_pkg_tarball}"
+    mkdir -p ${package_dir}/ipcl_pkg
+    cp -r ${IPCL_PKG_DIR}/* ${package_dir}/ipcl_pkg/
 
     echo "[INFO] package ipcl_pkg done"
 }
