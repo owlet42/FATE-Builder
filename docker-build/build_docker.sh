@@ -15,7 +15,7 @@
 #  limitations under the License.
 #
 
-set -e
+set -euxo pipefail
 source_dir=$(
     cd $(dirname $0)
     cd ../
