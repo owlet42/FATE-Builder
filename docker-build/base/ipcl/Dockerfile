@@ -39,6 +39,8 @@ RUN cd ./ipcl_pkg/ && python setup.py bdist_wheel
 
 FROM ${PREFIX}/base-image:${BASE_TAG} 
 
+RUN yum install -y wget
+
 # install openssl
 RUN wget --no-check-certificate http://www.openssl.org/source/openssl-1.1.0l.tar.gz \
     && tar zxf openssl-1.1.0l.tar.gz && cd openssl-1.1.0l \
