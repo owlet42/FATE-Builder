@@ -1,11 +1,13 @@
 ARG PREFIX=prefix
 ARG BASE_TAG=tag
-FROM ${PREFIX}/base-image:${BASE_TAG} 
+FROM centos/python-38-centos7 as builder
 
-
+USER root
 # upgrade gcc
-RUN yum install -y flex devtoolset-8 numactl-devel
+RUN yum install -y flex devtoolset-8 numactl-devel centos-release-scl wget git numactl-devel gmp-devel mpfr-devel 
 SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
+
+ENV PATH=${PATH}:/opt/python3/bin/
 
 RUN pip install cmake==3.22
 
@@ -32,6 +34,15 @@ ENV WORKDIR /data/projects/fate
 COPY ipcl_pkg.tar.gz .
 RUN tar -xzf ipcl_pkg.tar.gz
 
-# install ipcl-python
 ENV IPCL_DIR=${WORKDIR}/ipcl_pkg/ipcl
-RUN cd ./ipcl_pkg/ && python setup.py install
+RUN cd ./ipcl_pkg/ && python setup.py bdist_wheel
+
+FROM ${PREFIX}/base-image:${BASE_TAG} 
+
+# install ipcl-python
+WORKDIR /data/projects/fate/
+ENV WORKDIR /data/projects/fate
+COPY --from=builder /data/projects/fate/ipcl_pkg/ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl .
+
+ENV IPCL_DIR=${WORKDIR}/ipcl_pkg/ipcl
+RUN pip install ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl
