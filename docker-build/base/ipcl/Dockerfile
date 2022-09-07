@@ -9,7 +9,7 @@ SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
 
 ENV PATH=${PATH}:/opt/python3/bin/
 
-RUN pip install cmake==3.22
+RUN pip install cmake==3.22 wheel
 
 # install nasm
 RUN wget --no-check-certificate https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/nasm-2.15.05.tar.gz \
@@ -42,7 +42,8 @@ FROM ${PREFIX}/base-image:${BASE_TAG}
 # install ipcl-python
 WORKDIR /data/projects/fate/
 ENV WORKDIR /data/projects/fate
-COPY --from=builder /data/projects/fate/ipcl_pkg/ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl .
+COPY --from=builder /data/projects/fate/ipcl_pkg/dist/ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl .
 
 ENV IPCL_DIR=${WORKDIR}/ipcl_pkg/ipcl
-RUN pip install ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl
+RUN pip install ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl \
+    && rm -rf ipcl_python-1.1.3-cp38-cp38-linux_x86_64.whl
