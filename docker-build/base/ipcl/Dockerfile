@@ -4,7 +4,7 @@ FROM centos/python-38-centos7 as builder
 
 USER root
 # upgrade gcc
-RUN yum install -y flex devtoolset-8 numactl-devel centos-release-scl wget git numactl-devel gmp-devel mpfr-devel 
+RUN yum install -y flex devtoolset-8 numactl-devel centos-release-scl wget git numactl-devel gmp-devel mpfr-devel libssl
 SHELL ["/usr/bin/scl", "enable", "devtoolset-8"]
 
 ENV PATH=${PATH}:/opt/python3/bin/
@@ -38,6 +38,15 @@ ENV IPCL_DIR=${WORKDIR}/ipcl_pkg/ipcl
 RUN cd ./ipcl_pkg/ && python setup.py bdist_wheel
 
 FROM ${PREFIX}/base-image:${BASE_TAG} 
+
+# install openssl
+RUN wget --no-check-certificate http://www.openssl.org/source/openssl-1.1.0l.tar.gz \
+    && tar zxf openssl-1.1.0l.tar.gz && cd openssl-1.1.0l \
+    && ./config --prefix=/usr/local/openssl && make -j && make install \
+    && ln -sf /usr/local/openssl/bin/openssl /usr/bin/openssl \
+    && echo "/usr/local/openssl/lib" >> /etc/ld.so.conf && ldconfig -v \
+    && cd .. && rm -rf openssl-*
+ENV OPENSSL_ROOT_DIR=/usr/local/openssl
 
 # install ipcl-python
 WORKDIR /data/projects/fate/
