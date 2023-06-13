@@ -103,6 +103,7 @@ FATE_DIR=/root/FATE bash build.sh all
 
 ```bash
 $ docker images | grep federatedai
+TODO: add new images
 REPOSITORY                                       TAG
 federatedai/python-nn                            <TAG>
 federatedai/fate-test                            <TAG>
@@ -121,7 +122,7 @@ federatedai/base-image                           <TAG>
 全部构建，如果想要构建全部类型的镜像可以使用下面的命令。
 
 ```sh
-FATE_DIR=/root/FATE TAG=1.11.1-release Build_Basic=1 Build_NN=1 Build_FUM=1 Build_Spark=1 Build_OP=1 Build_IPCL=1 Build_GPU=1 IPCL_PKG_DIR=/root/pailliercryptolib_python/ IPCL_VERSION=v1.1.3 bash docker-build/build.sh all
+FATE_DIR=/root/FATE TAG=1.11.2-release Build_Basic=1 Build_NN=1 Build_FUM=1 Build_Spark=1 Build_OP=1 Build_IPCL=1 Build_GPU=1 Build_LLM=1 Build_LLM_VERSION=v1.1.0 IPCL_PKG_DIR=/root/pailliercryptolib_python/ IPCL_VERSION=v1.1.3 bash docker-build/build.sh all
 ```
 
 ### 把镜像推送到镜像仓库（可选）
