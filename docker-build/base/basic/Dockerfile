@@ -33,9 +33,4 @@ RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN pip install --upgrade pip && \
-    sed -i '/tensorflow.*/d' /data/projects/python/requirements.txt && \
-    # sed -i '/torch.*/d' /data/projects/python/requirements.txt && \
-    # sed -i '/torchvision.*/d' /data/projects/python/requirements.txt && \
-    sed -i '/pytorch-lightning.*/d' /data/projects/python/requirements.txt && \
-    sed -i '/pyspark.*/d' /data/projects/python/requirements.txt && \
     pip install --no-cache-dir -r requirements.txt 
