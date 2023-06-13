@@ -6,7 +6,7 @@ FROM ${PREFIX}/${BASE_IMAGE}:${BASE_TAG} as builder
 
 WORKDIR /data/projects/fate/
 
-COPY fate_llm.tar.gz .
+COPY fate_llm.tar.gz . 
 
 RUN tar -xzf fate_llm.tar.gz;
 
@@ -14,6 +14,6 @@ FROM ${PREFIX}/${BASE_IMAGE}:${BASE_TAG}
 
 WORKDIR /data/projects/fate
 
-COPY  --from=builder /data/projects/fate/fate_llm /data/projects/fate/fate/python/fate_llm
+COPY  --from=builder /data/projects/fate/fate_llm /data/projects/fate/fate/
 
-RUN pip install --no-cache-dir -r /data/projects/fate/fate/python/fate_llm/requirements.txt
+RUN pip install --no-cache-dir -r /data/projects/fate/fate/python/fate_llm/requirements-fate-llm.txt

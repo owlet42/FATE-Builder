@@ -271,7 +271,7 @@ echo "[INFO] get fate_llm code start"
     echo "[INFO] get fate_llm code done"
 }
 
-function packaging_llm() {
+function packaging_fate_llm() {
     echo "[INFO] package FATE-LLM start"
     pull_llm
     cp -r llm ${package_dir}/
