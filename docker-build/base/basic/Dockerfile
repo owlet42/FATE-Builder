@@ -5,7 +5,7 @@ ARG version
 USER root
 WORKDIR /data/projects/python/
 ENV VIRTUAL_ENV /data/projects/python/venv
-COPY requirements.txt /data/projects/python/
+COPY requirements*.txt /data/projects/python/
 
 RUN set -eux && \
     rpm --rebuilddb && \

@@ -53,7 +53,7 @@ function packaging_bin() {
 
 function packaging_conf() {
     echo "[INFO] package conf start"
-    cp fate.env RELEASE.md python/requirements.txt ${package_dir}/
+    cp fate.env RELEASE.md python/requirements*.txt ${package_dir}/
     cp -r conf ${package_dir}/
     echo "[INFO] package bin done"
 }
