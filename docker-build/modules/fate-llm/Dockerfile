@@ -16,4 +16,4 @@ WORKDIR /data/projects/fate
 
 COPY  --from=builder /data/projects/fate/fate_llm /data/projects/fate/fate/
 
-RUN pip install --no-cache-dir -r /data/projects/fate/fate/python/fate_llm/requirements-fate-llm.txt
+RUN pip install --no-cache-dir -r /data/projects/python/requirements-fate-llm.txt
