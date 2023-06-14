@@ -319,6 +319,8 @@ buildModule(){
         [ "$Build_OP" -gt 0 ] && [ "$Build_IPCL" -gt 0 ] && buildOptionalIPCLModule
         [ "$Build_GPU" -gt 0 ] && buildEggrollNNGPU
         [ "$Build_GPU" -gt 0 ] &&  [ "$Build_Spark" -gt 0 ] && buildSparkNNGPU
+        [ "$Build_LLM" -gt 0 ] && buildEggrollLLMGPU
+        [ "$Build_LLM" -gt 0 ] &&  [ "$Build_Spark" -gt 0 ] && buildSparkLLMGPU
 }
 
 pushImage() {
