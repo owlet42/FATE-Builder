@@ -200,32 +200,32 @@ buildSparkNNGPU(){
 
 }
 
-buildEggrollLLMGPU(){
-        echo "### START BUILDING fateflow-llm-gpu ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-llm-gpu:${TAG} \
+buildEggrollAllGPU(){
+        echo "### START BUILDING fateflow-all-gpu ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-all-gpu:${TAG} \
                 -f ${WORKING_DIR}/modules/fate-llm/Dockerfile ${PACKAGE_DIR_CACHE}
-        echo "### FINISH BUILDING fateflow-llm-gpu ###"
+        echo "### FINISH BUILDING fateflow-all-gpu ###"
         echo ""
 
-        echo "### START BUILDING eggroll-llm-gpu ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=eggroll-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/eggroll-llm-gpu:${TAG} \
+        echo "### START BUILDING eggroll-all-gpu ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=eggroll-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/eggroll-all-gpu:${TAG} \
                 -f ${WORKING_DIR}/modules/fate-llm/Dockerfile ${PACKAGE_DIR_CACHE}
-        echo "### FINISH BUILDING eggroll-llm-gpu ###"
+        echo "### FINISH BUILDING eggroll-all-gpu ###"
         echo ""
 
 }
 
-buildSparkLLMGPU(){
-        echo "### START BUILDING fateflow-spark-llm-gpu ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-spark-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark-llm-gpu:${TAG} \
+buildSparkAllGPU(){
+        echo "### START BUILDING fateflow-spark-all-gpu ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-spark-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark-all-gpu:${TAG} \
                 -f ${WORKING_DIR}/modules/fate-llm/Dockerfile ${PACKAGE_DIR_CACHE}
-        echo "### FINISH BUILDING fateflow-spark-llm-gpu ###"
+        echo "### FINISH BUILDING fateflow-spark-all-gpu ###"
         echo ""
 
-        echo "### START BUILDING spark-worker-llm-gpu ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=spark-worker-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/spark-worker-llm-gpu:${TAG} \
+        echo "### START BUILDING spark-worker-all-gpu ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=spark-worker-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/spark-worker-all-gpu:${TAG} \
                 -f ${WORKING_DIR}/modules/fate-llm/Dockerfile ${PACKAGE_DIR_CACHE}
-        echo "### FINISH BUILDING spark-worker-llm-gpu ###"
+        echo "### FINISH BUILDING spark-worker-all-gpu ###"
         echo ""
 
 }
@@ -319,8 +319,8 @@ buildModule(){
         [ "$Build_OP" -gt 0 ] && [ "$Build_IPCL" -gt 0 ] && buildOptionalIPCLModule
         [ "$Build_GPU" -gt 0 ] && buildEggrollNNGPU
         [ "$Build_GPU" -gt 0 ] &&  [ "$Build_Spark" -gt 0 ] && buildSparkNNGPU
-        [ "$Build_LLM" -gt 0 ] && buildEggrollLLMGPU
-        [ "$Build_LLM" -gt 0 ] &&  [ "$Build_Spark" -gt 0 ] && buildSparkLLMGPU
+        [ "$Build_LLM" -gt 0 ] && buildEggrollAllGPU
+        [ "$Build_LLM" -gt 0 ] &&  [ "$Build_Spark" -gt 0 ] && buildSparkAllGPU
 }
 
 pushImage() {
@@ -419,30 +419,11 @@ pushImage() {
                         echo ""
                 done
         fi
-
-        if [ "$Build_GPU" -gt 0 ]
-        then
-                for module in "eggroll-nn-gpu" "fateflow-nn-gpu" ; do
-                        echo "### START PUSH ${module} ###"
-                        docker push ${PREFIX}/${module}:${TAG}
-                        echo "### FINISH PUSH ${module} ###"
-                        echo ""
-                done
-        fi
-
-        if [ "$Build_GPU" -gt 0 ] && [ "$Build_Spark" -gt 0 ]
-        then
-                for module in "spark-worker-nn-gpu" "fateflow-spark-nn-gpu" ; do
-                        echo "### START PUSH ${module} ###"
-                        docker push ${PREFIX}/${module}:${TAG}
-                        echo "### FINISH PUSH ${module} ###"
-                        echo ""
-                done
-        fi
         
+        ## push llm image
         if [ "$Build_LLM" -gt 0 ]
         then
-                for module in "eggroll-llm-gpu" "fateflow-llm-gpu" ; do
+                for module in "eggroll-all-gpu" "fateflow-all-gpu" ; do
                         echo "### START PUSH ${module} ###"
                         docker push ${PREFIX}/${module}:${TAG}
                         echo "### FINISH PUSH ${module} ###"
@@ -452,7 +433,7 @@ pushImage() {
 
         if [ "$Build_LLM" -gt 0 ] && [ "$Build_Spark" -gt 0 ]
         then
-                for module in "spark-worker-llm-gpu" "fateflow-spark-llm-gpu" ; do
+                for module in "spark-worker-all-gpu" "fateflow-spark-all-gpu" ; do
                         echo "### START PUSH ${module} ###"
                         docker push ${PREFIX}/${module}:${TAG}
                         echo "### FINISH PUSH ${module} ###"
