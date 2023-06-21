@@ -106,10 +106,6 @@ FATE_DIR=/root/FATE bash build.sh all
 ```bash
 $ docker images | grep federatedai
 REPOSITORY                           TAG
-federatedai/spark-worker-all-gpu     <TAG>
-federatedai/fateflow-spark-all-gpu   <TAG>
-federatedai/eggroll-all-gpu          <TAG>
-federatedai/fateflow-all-gpu         <TAG>
 federatedai/fate-test-ipcl           <TAG>
 federatedai/spark-worker-ipcl        <TAG>
 federatedai/spark-base-ipcl          <TAG>
@@ -117,7 +113,18 @@ federatedai/fateflow-spark-ipcl      <TAG>
 federatedai/eggroll-ipcl             <TAG>
 federatedai/fateflow-ipcl            <TAG>
 federatedai/base-image-ipcl          <TAG>
+federatedai/spark-worker-all-gpu     <TAG>
+federatedai/spark-bash-all-gpu       <TAG>
+federatedai/fateflow-spark-all-gpu   <TAG>
+federatedai/eggroll-all-gpu          <TAG>
+federatedai/fateflow-all-gpu         <TAG>
+federatedai/spark-worker-nn-gpu      <TAG>
+federatedai/spark-bash-nn-gpu        <TAG>
+federatedai/fateflow-spark-nn-gpu    <TAG>
+federatedai/eggroll-nn-gpu           <TAG>
+federatedai/fateflow-nn-gpu          <TAG>
 federatedai/spark-worker-nn          <TAG>
+federatedai/spark-bash-nn            <TAG>
 federatedai/fateflow-spark-nn        <TAG>
 federatedai/eggroll-nn               <TAG>
 federatedai/fateflow-nn              <TAG>
