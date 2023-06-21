@@ -393,7 +393,7 @@ pushImage() {
         ## push Spark nn-gpu image (Spark NN GPU)
         if [ "$Build_Spark" -gt 0 ] && [ "$Build_NN" -gt 0 ] && [ "$Build_GPU" -gt 0 ]
         then
-                for module in "fateflow-spark-nn-gpu" "soark-worker-nn-gpu" ; do
+                for module in "fateflow-spark-nn-gpu" "spark-worker-nn-gpu" ; do
                         echo "### START PUSH ${module} ###"
                         docker push ${PREFIX}/${module}:${TAG}
                         echo "### FINISH PUSH ${module} ###"
