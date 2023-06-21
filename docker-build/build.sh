@@ -219,6 +219,22 @@ buildEggrollAllGPU(){
 }
 
 
+buildSparkAllGPU(){
+        echo "### START BUILDING fateflow-spark-all-gpu ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-spark-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark-all-gpu:${TAG} \
+                -f ${WORKING_DIR}/modules/fate-llm/Dockerfile ${PACKAGE_DIR_CACHE}
+        echo "### FINISH BUILDING fateflow-spark-all-gpu ###"
+        echo ""
+
+        echo "### START BUILDING spark-worker-all-gpu ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=spark-worker-nn-gpu --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/spark-worker-all-gpu:${TAG} \
+                -f ${WORKING_DIR}/modules/fate-llm/Dockerfile ${PACKAGE_DIR_CACHE}
+        echo "### FINISH BUILDING spark-worker-all-gpu ###"
+        echo ""
+
+}
+
+
 buildEggrollBasicIPCL(){
         echo "### START BUILDING base-ipcl ###"
         docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/base-image-ipcl:${TAG} -f ${WORKING_DIR}/base/ipcl/Dockerfile ${PACKAGE_DIR_CACHE}
