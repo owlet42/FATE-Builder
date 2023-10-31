@@ -518,13 +518,7 @@ done
 check_fate_dir
 
 # cd ${WORKING_DIR}
-if [ -f "$FATE_DIR/fate.env" ]; then
-  version="$(grep "FATE=" $FATE_DIR/fate.env | awk -F '=' '{print $2}')"
-else
-  echo "Error: Please set FATE_DIR or Check FATE_DIR=$FATE_DIR is a FATE directory"
-  # TODO git clone FATE
-  exit 1
-fi
+version="$(git describe --tags --abbrev=0)"
 
 # set image PREFIX and TAG
 if [  -z "${TAG}" ]; then
