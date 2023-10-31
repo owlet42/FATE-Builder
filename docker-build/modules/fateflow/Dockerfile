@@ -39,6 +39,7 @@ ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/fate_flow/pyt
 ENV EGGROLL_HOME=/data/projects/fate/eggroll
 ENV FATE_PROJECT_BASE=/data/projects/fate
 
-RUN pip install werkzeug 
+RUN pip install werkzeug; \
+    pip instal -r /data/projects/fate/fate_flow/python/requirements-flow.txt;
 
 CMD ["/bin/bash", "-c", "sleep 5 && python fate_flow/python/fate_flow/fate_flow_server.py"]
