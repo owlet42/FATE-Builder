@@ -118,7 +118,7 @@ packaging_eggroll() {
     cd "${package_dir}"/eggroll/
     tar xzf eggroll.tar.gz
     rm -rf eggroll.tar.gz
-    cp "${source_dir}"/eggroll/requirements.txt ./eggroll/
+    cp "${source_dir}"/eggroll/requirements.txt ./
     echo "[INFO] package eggroll done"
 }
 
