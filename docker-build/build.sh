@@ -93,10 +93,10 @@ buildEggrollBasicCPU() {
                 -f ${WORKING_DIR}/modules/fateflow/Dockerfile ${PACKAGE_DIR_CACHE}
         echo "### FINISH BUILDING fateflow ###"
         echo ""
-        echo "### START BUILDING fateboard ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateboard:${TAG} \
-                -f ${WORKING_DIR}/modules/fateboard/Dockerfile ${PACKAGE_DIR_CACHE}
-        echo "### FINISH BUILDING fateboard ###"
+        echo "### START BUILDING osx ###"
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/osx:${TAG} \
+                -f ${WORKING_DIR}/modules/osx/Dockerfile ${PACKAGE_DIR_CACHE}
+        echo "### FINISH BUILDING osx ###"
         echo ""
 
         echo "### START BUILDING eggroll ###"

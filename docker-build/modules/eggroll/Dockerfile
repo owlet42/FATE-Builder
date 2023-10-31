@@ -27,11 +27,11 @@ WORKDIR /data/projects/fate/eggroll/
 
 COPY --from=builder /data/projects/fate/eggroll /data/projects/fate/eggroll
 COPY --from=builder /data/projects/fate/fate /data/projects/fate/fate
-COPY --from=builder /data/projects/fate/fateflow /data/projects/fate/fateflow
+COPY --from=builder /data/projects/fate/fate_flow /data/projects/fate/fate_flow
 COPY  --from=builder /data/projects/fate/conf /data/projects/fate/conf
 COPY --from=builder /data/projects/fate/fate.env /data/projects/fate/
 
-ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/eggroll/python:/data/projects/fate/fateflow/python
+ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/eggroll/python:/data/projects/fate/fate_flow/python
 ENV EGGROLL_HOME=/data/projects/fate/eggroll/
 
 ENV TINI_VERSION v0.18.0
