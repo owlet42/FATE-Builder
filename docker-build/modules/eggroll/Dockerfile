@@ -31,7 +31,7 @@ ENV EGGROLL_HOME=/data/projects/fate/eggroll/
 
 RUN sed -i "s/python-rocksdb==0.7.0/# python-rocksdb==0.7.0/g" requirements.txt && \
     pip install -r /data/projects/fate/eggroll/requirements.txt && \
-    pip install -r /data/projects/fate/fate_flow/python/requirements-fate.txt;
+    pip install -r /data/projects/python/requirements-fate.txt 
 
 ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
