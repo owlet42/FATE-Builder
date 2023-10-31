@@ -31,4 +31,6 @@ RUN curl -o Python-3.8.13.tar.xz https://www.python.org/ftp/python/3.8.13/Python
 RUN python3 -m venv $VIRTUAL_ENV
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
+COPY requirements*.txt .
+
 RUN pip install --upgrade pip 
