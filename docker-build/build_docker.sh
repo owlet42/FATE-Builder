@@ -37,7 +37,7 @@ cd "${source_dir}"
 echo "[INFO] source dir: ${source_dir}"
 git submodule init
 git submodule update
-version=$(grep "FATE=" fate.env | awk -F '=' '{print $2}')
+version=$(git describe --tags --abbrev=0)
 package_dir_name="FATE_install_${version}_${version_tag}"
 package_dir=${source_dir}/${package_dir_name}
 echo "[INFO] build info"
@@ -53,7 +53,7 @@ function packaging_bin() {
 
 function packaging_conf() {
     echo "[INFO] package conf start"
-    cp fate.env RELEASE.md python/requirements*.txt "${package_dir}"/
+    cp RELEASE.md python/requirements*.txt "${package_dir}"/
     cp -r conf "${package_dir}"/
     echo "[INFO] package bin done"
 }
