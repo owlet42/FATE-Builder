@@ -21,4 +21,4 @@ ENV PATH=$PATH:/data/projects/spark-3.1.3-bin-hadoop3.2/bin:/data/projects/hadoo
 
 RUN pip install --no-cache-dir -r /data/projects/python/requirements-spark.txt \
         -r /data/projects/python/requirements-pulsar.txt \
-        -r /data/projects/python/requirements-rebbitmq.txt
+        -r /data/projects/python/requirements-rabbitmq.txt
