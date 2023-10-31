@@ -82,8 +82,10 @@ buildEggrollBasicCPU() {
         echo "START BUILDING Eggroll Module IMAGE"
 
         echo "### START BUILDING fateflow ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=base-image --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow:${TAG} \
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=base-image --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-base:${TAG} \
                 -f ${WORKING_DIR}/modules/fateflow/Dockerfile ${PACKAGE_DIR_CACHE}
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-base --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/fateflow:${TAG} \
+                -f ${WORKING_DIR}/modules/fateflow-eggroll/Dockerfile ${PACKAGE_DIR_CACHE}
         echo "### FINISH BUILDING fateflow ###"
         echo ""
         echo "### START BUILDING osx ###"
@@ -106,12 +108,12 @@ buildSparkBasicCPU(){
 
 
         echo "### START BUILDING fateflow-spark ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark:${TAG} -f ${WORKING_DIR}/modules/fateflow-spark/Dockerfile ${WORKING_DIR}/modules/fateflow-spark/
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-base --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark:${TAG} -f ${WORKING_DIR}/modules/fateflow-spark/Dockerfile ${WORKING_DIR}/modules/fateflow-spark/
         echo "### FINISH BUILDING fateflow-spark ###"
         echo ""
 
         echo "### START BUILDING spark-base ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/spark-base:${TAG} -f ${WORKING_DIR}/modules/spark-base/Dockerfile ${WORKING_DIR}/modules/spark-base/
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-base --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/spark-base:${TAG} -f ${WORKING_DIR}/modules/spark-base/Dockerfile ${WORKING_DIR}/modules/spark-base/
         echo "### FINISH BUILDING spark-base ###"
         echo ""
 
@@ -235,8 +237,10 @@ buildEggrollBasicIPCL(){
         echo ""
 
         echo "### START BUILDING fateflow-ipcl ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=base-image-ipcl --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-ipcl:${TAG} \
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=base-image-ipcl --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-ipcl-base:${TAG} \
                 -f ${WORKING_DIR}/modules/fateflow/Dockerfile ${PACKAGE_DIR_CACHE}
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-ipcl-base --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/fateflow-ipcl:${TAG} \
+                -f ${WORKING_DIR}/modules/fateflow-eggroll/Dockerfile ${PACKAGE_DIR_CACHE}
         echo "### FINISH BUILDING fateflow-ipcl ###"
         echo ""
 
@@ -249,7 +253,7 @@ buildEggrollBasicIPCL(){
 
 buildSparkBasicIPCL(){
         echo "### START BUILDING fateflow-spark-ipcl ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-ipcl --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark-ipcl:${TAG} \
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-ipcl-base --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark-ipcl:${TAG} \
                 -f ${WORKING_DIR}/modules/fateflow-spark/Dockerfile ${WORKING_DIR}/modules/fateflow-spark/
         echo "### FINISH BUILDING fateflow-spark-ipcl ###"
         echo ""
