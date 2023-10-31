@@ -7,7 +7,9 @@ FROM ${PREFIX}/${BASE_IMAGE}:${BASE_TAG} as builder
 WORKDIR /data/projects/fate/
 
 COPY fate.tar.gz .
-COPY fateflow.tar.gz .
+COPY fate_flow.tar.gz .
+COPY fate_client.tar.gz .
+COPY fate_test.tar.gz .
 COPY eggroll.tar.gz .
 COPY examples.tar.gz .
 COPY conf.tar.gz .
@@ -15,7 +17,9 @@ COPY doc.tar.gz .
 COPY fate.env .
 
 RUN tar -xzf fate.tar.gz; \
-    tar -xzf fateflow.tar.gz; \
+    tar -xzf fate_flow.tar.gz; \
+    tar -xzf fate_client.tar.gz; \
+    tar -xzf fate_test.tar.gz; \
     tar -xzf eggroll.tar.gz; \
     tar -xzf examples.tar.gz; \
     tar -xzf conf.tar.gz; \
@@ -34,6 +38,7 @@ COPY  --from=builder /data/projects/fate/doc /data/projects/fate/doc
 COPY --from=builder /data/projects/fate/eggroll /data/projects/fate/eggroll
 COPY --from=builder /data/projects/fate/fate_flow /data/projects/fate/fate_flow
 COPY --from=builder /data/projects/fate/fate_client /data/projects/fate/fate_client
+COPY --from=builder /data/projects/fate/fate_test /data/projects/fate/fate_test
 
 ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/fate_flow/python
 ENV EGGROLL_HOME=/data/projects/fate/eggroll

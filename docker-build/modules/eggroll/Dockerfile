@@ -6,12 +6,12 @@ WORKDIR /data/projects/fate/
 COPY eggroll.tar.gz .
 COPY fate.tar.gz .
 COPY conf.tar.gz .
-COPY fateflow.tar.gz .
+COPY fate_flow.tar.gz .
 COPY fate.env .
 RUN tar -xzf eggroll.tar.gz; \
     tar -xzf fate.tar.gz; \
     tar -xzf conf.tar.gz; \
-    tar -xzf fateflow.tar.gz;
+    tar -xzf fate_flow.tar.gz;
 
 RUN ls -l
 

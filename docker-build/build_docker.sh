@@ -22,7 +22,7 @@ source_dir=$(
     cd ../
     pwd
 )
-support_modules=(bin examples deploy proxy fate fateflow fateclient fatetest osx eggroll doc fate_llm)
+support_modules=(bin examples deploy proxy fate fate_flow fate_client fate_test osx eggroll doc fate_llm)
 [ "${Build_IPCL:-0}" -gt 0 ] && support_modules[${#support_modules[@]}]=ipcl_pkg
 # environment_modules=(python36 jdk pypi)
 packaging_modules=()
@@ -90,16 +90,16 @@ function packaging_fate() {
     echo "[INFO] package fate done"
 }
 
-function packaging_fateflow() {
-    echo "[INFO] package fateflow start"
+function packaging_fate_flow() {
+    echo "[INFO] package fate_flow start"
     cp -r fate_flow "${package_dir}"/fate_flow
-    echo "[INFO] package fateflow done"
+    echo "[INFO] package fate_flow done"
 }
 
-function packaging_fatetest() {
-    echo "[INFO] package fatetest start"
+function packaging_fate_test() {
+    echo "[INFO] package fate_test start"
     cp -r fate_test "${package_dir}"/fate_test
-    echo "[INFO] package fatetest done"
+    echo "[INFO] package fate_test done"
 }
 
 function packaging_osx() {
@@ -108,10 +108,10 @@ function packaging_osx() {
     echo "[INFO] package osx done"
 }
 
-packaging_fateclient() {
-     echo "[INFO] package fateclient start"
+packaging_fate_client() {
+     echo "[INFO] package fate_client start"
     cp -r fate_client "${package_dir}"/
-    echo "[INFO] package fateclient done"
+    echo "[INFO] package fate_client done"
 }
 
 packaging_eggroll() {
