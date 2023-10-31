@@ -13,7 +13,6 @@ COPY fate_test.tar.gz .
 COPY eggroll.tar.gz .
 COPY examples.tar.gz .
 COPY doc.tar.gz .
-COPY fate.env .
 
 RUN tar -xzf fate.tar.gz; \
     tar -xzf fate_flow.tar.gz; \
@@ -29,7 +28,6 @@ WORKDIR /data/projects/fate
 
 COPY  --from=builder /data/projects/fate/fate /data/projects/fate/fate
 COPY  --from=builder /data/projects/fate/examples /data/projects/fate/examples
-COPY  --from=builder /data/projects/fate/fate.env /data/projects/fate/
 COPY  --from=builder /data/projects/fate/doc /data/projects/fate/doc
 
 COPY --from=builder /data/projects/fate/eggroll /data/projects/fate/eggroll

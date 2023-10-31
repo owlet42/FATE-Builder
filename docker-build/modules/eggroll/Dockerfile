@@ -6,7 +6,6 @@ WORKDIR /data/projects/fate/
 COPY eggroll.tar.gz .
 COPY fate.tar.gz .
 COPY fate_flow.tar.gz .
-COPY fate.env .
 RUN tar -xzf eggroll.tar.gz; \
     tar -xzf fate.tar.gz; \
     tar -xzf fate_flow.tar.gz;
@@ -26,7 +25,6 @@ WORKDIR /data/projects/fate/eggroll/
 COPY --from=builder /data/projects/fate/eggroll /data/projects/fate/eggroll
 COPY --from=builder /data/projects/fate/fate /data/projects/fate/fate
 COPY --from=builder /data/projects/fate/fate_flow /data/projects/fate/fate_flow
-COPY --from=builder /data/projects/fate/fate.env /data/projects/fate/
 
 ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/eggroll/python:/data/projects/fate/fate_flow/python
 ENV EGGROLL_HOME=/data/projects/fate/eggroll/
