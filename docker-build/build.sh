@@ -62,13 +62,6 @@ package() {
 #     echo "Built builder"
 # }
 
-check_fate_dir() {
-    if [ ! -d "$FATE_DIR" ]; then
-        echo "FATE_DIR ($FATE_DIR) does not exist"
-        exit 1
-    fi
-}
-
 # build_fate() {
 #     echo "Building fate"
 #     docker run -v $FATE_DIR:$FATE_DIR federatedai/builder /bin/bash -c "cd $FATE_DIR && ./build.sh"
@@ -513,12 +506,18 @@ while getopts "hfpt:" opt; do
     esac
 done
 
+check_fate_dir() {
+    if [ ! -d "$FATE_DIR" ]; then
+        echo "FATE_DIR ($FATE_DIR) does not exist"
+        exit 1
+    fi
+}
 
 # check fate dir
 check_fate_dir
 
 # cd ${WORKING_DIR}
-version="$(git describe --tags --abbrev=0)"
+version="$(cd "$FATE_DIR"; git describe --tags --abbrev=0)"
 
 # set image PREFIX and TAG
 if [  -z "${TAG}" ]; then
