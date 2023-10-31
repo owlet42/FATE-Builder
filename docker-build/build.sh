@@ -281,7 +281,7 @@ buildOptionalModule(){
         echo ""
 
         echo "### START BUILDING fate-test ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fate-test:${TAG} -f ${WORKING_DIR}/modules/fate-test/Dockerfile ${WORKING_DIR}/modules/fate-test/
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=client --build-arg BASE_TAG=${BASE_TAG} ${Docker_Options} -t ${PREFIX}/fate-test:${TAG} -f ${WORKING_DIR}/modules/fate-test/Dockerfile ${WORKING_DIR}/modules/fate-test/
         echo "### FINISH BUILDING fate-test ###"
         echo ""
 

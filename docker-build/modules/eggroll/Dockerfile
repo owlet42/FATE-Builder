@@ -29,6 +29,8 @@ COPY --from=builder /data/projects/fate/fate_flow /data/projects/fate/fate_flow
 ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/eggroll/python:/data/projects/fate/fate_flow/python
 ENV EGGROLL_HOME=/data/projects/fate/eggroll/
 
+RUN pip install -r /data/projects/fate/eggroll/requirements.txt
+
 ENV TINI_VERSION v0.18.0
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
 RUN chmod +x /tini
