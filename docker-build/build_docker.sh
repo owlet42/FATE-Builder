@@ -22,7 +22,7 @@ source_dir=$(
     cd ../
     pwd
 )
-support_modules=(bin requirements examples deploy proxy fate fate_flow fate_client fate_test osx eggroll doc fate_llm)
+support_modules=(bin examples deploy proxy fate fate_flow fate_client fate_test osx eggroll doc fate_llm)
 [ "${Build_IPCL:-0}" -gt 0 ] && support_modules[${#support_modules[@]}]=ipcl_pkg
 # environment_modules=(python36 jdk pypi)
 packaging_modules=()
@@ -49,12 +49,7 @@ mkdir -p "${package_dir}"
 
 function packaging_bin() {
     packaging_general_dir "bin"
-}
-
-function packaging_requirements() {
-    echo "[INFO] package requirements start"
     cp RELEASE.md python/requirements*.txt "${package_dir}"/
-    echo "[INFO] package requirements done"
 }
 
 function packaging_examples() {
