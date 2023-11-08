@@ -108,7 +108,7 @@ buildSparkBasicCPU(){
 
 
         echo "### START BUILDING fateflow-spark ###"
-        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow-base --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark:${TAG} -f ${WORKING_DIR}/modules/fateflow-spark/Dockerfile ${WORKING_DIR}/modules/fateflow-spark/
+        docker build --build-arg PREFIX=${PREFIX} --build-arg BASE_IMAGE=fateflow --build-arg BASE_TAG=${TAG} ${Docker_Options} -t ${PREFIX}/fateflow-spark:${TAG} -f ${WORKING_DIR}/modules/fateflow-spark/Dockerfile ${WORKING_DIR}/modules/fateflow-spark/
         echo "### FINISH BUILDING fateflow-spark ###"
         echo ""
 
@@ -336,7 +336,7 @@ pushImage() {
         ## push EggRoll image (EggRoll Basic CPU)
         if [ "$Build_Basic" -gt 0 ]
         then
-                for module in "fateflow" "fateboard" "eggroll" ; do
+                for module in "fateflow" "osx" "eggroll" ; do
                         echo "### START PUSH ${module} ###"
                         docker push ${PREFIX}/${module}:${TAG}
                         echo "### FINISH PUSH ${module} ###"
