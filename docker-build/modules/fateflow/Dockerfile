@@ -39,7 +39,7 @@ ENV PYTHONPATH=/data/projects/fate/fate/python:/data/projects/fate/fate_flow/pyt
 ENV EGGROLL_HOME=/data/projects/fate/eggroll
 ENV FATE_PROJECT_BASE=/data/projects/fate
 
-RUN pip install werkzeug; \
+RUN pip install werkzeug cryptography; \
     pip install -r /data/projects/fate/fate_flow/python/requirements-flow.txt; \
     pip install -r /data/projects/python/requirements-fate.txt;
 
